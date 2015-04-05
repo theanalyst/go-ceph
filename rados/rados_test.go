@@ -495,7 +495,7 @@ func TestListXattrs(t *testing.T) {
 		data := []byte(GetUUID())
 		err = pool.SetXattr("obj", name, data)
 		assert.NoError(t, err)
-		input_xattrs[name] = data
+		input_xattrs[name] = string(data)
 	}
 
 	output_xattrs := make(map[string]string)
