@@ -246,7 +246,7 @@ func (ioctx *IOContext) ListXattrs(oid string) (m map[string]string, err error) 
 
 	ret := C.rados_getxattrs(ioctx.ioctx, c_oid, &it)
 	if ret < 0 {
-		return RadosError(ret)
+		return nil, RadosError(ret)
 	}
 	defer func() { C.rados_getxattrs_end(it) }()
 
