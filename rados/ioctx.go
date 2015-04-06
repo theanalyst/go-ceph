@@ -265,7 +265,7 @@ func (ioctx *IOContext) ListXattrs(oid string) (map[string]string, error) {
 		if c_name == nil {
 			return m, nil // stop iteration
 		}
-		m[C.GoString(c_name)] = C.GoStringN(c_val, (c.int)(c_len))
+		m[C.GoString(c_name)] = C.GoStringN(c_val, (C.int)(c_len))
 	}
 
 	panic("Invalid State")
