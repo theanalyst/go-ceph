@@ -253,16 +253,19 @@ func (ioctx *IOContext) ListXattrs(oid string) (map[string]string, error) {
 	for {
 		var c_name, c_val *C.char
 		var c_len C.size_t
+		defer C.free(unsafe.Pointer(c_name))
+		defer C.free(unsafe.Pointer(c_val))
+
 		ret := C.rados_getxattrs_next(it, &c_name, &c_val, &c_len)
 		if ret < 0 {
 			return nil, RadosError(int(ret))
 		}
 		// rados api returns a null name,val & 0-length upon
 		// end of iteration
-		if c_len == 0 {
+		if c_name == 0 {
 			return m, nil // stop iteration
 		}
-		m[C.GoString(c_name)] = C.GoString(c_val)
+		m[C.GoString(c_name)] = C.GoStringN(c_val, (c.int)(c_len))
 	}
 
 	panic("Invalid State")
