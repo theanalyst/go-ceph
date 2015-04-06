@@ -262,7 +262,7 @@ func (ioctx *IOContext) ListXattrs(oid string) (map[string]string, error) {
 		}
 		// rados api returns a null name,val & 0-length upon
 		// end of iteration
-		if c_name == 0 {
+		if c_name == nil {
 			return m, nil // stop iteration
 		}
 		m[C.GoString(c_name)] = C.GoStringN(c_val, (c.int)(c_len))
