@@ -531,7 +531,7 @@ func TestRmXattr(t *testing.T) {
 
 	key = "key2"
 	val = []byte("val2")
-	err := pool.SetXattr("obj", key, val)
+	err = pool.SetXattr("obj", key, val)
 	assert.NoError(t, err)
 
 	xattr_list := make(map[string][]byte)
@@ -539,8 +539,10 @@ func TestRmXattr(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, len(xattr_list), 2)
 
-	pool.RmXattr("key2")
+	pool.RmXattr("obj", "key2")
 	xattr_list, err = pool.ListXattrs("obj")
+	assert.NoError(t, err)
+	assert.Equal(t, len(xattr_list), 1)
 
 	found := false
 	for key, _ = range xattr_list {
